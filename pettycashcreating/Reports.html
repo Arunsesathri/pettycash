@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-Wyek4YOd20wJh5pHw1hE1t81Lj0ioKJlKDzQ8z1qL+tfG3IiFkIMwQFX2VTZlMQDd8Li5WvXKteVb7c+yvu4L4A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Your Page Title</title>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <form id="dataForm">
+            <div class="mb-3">
+                <label for="from" class="form-label">From:</label>
+                <input type="text" class="form-control" id="from" placeholder="Enter From" required>
+            </div>
+            <div class="mb-3">
+                <label for="to" class="form-label">To:</label>
+                <input type="text" class="form-control" id="to" placeholder="Enter To" required>
+            </div>
+            <div class="mb-3">
+                <label for="amount" class="form-label">Amount:</label>
+                <input type="text" class="form-control" id="amount" placeholder="Enter Amount" required>
+            </div>
+            <div class="mb-3">
+                <label for="date" class="form-label">Date:</label>
+                <input type="text" class="form-control" id="date" placeholder="Enter Date" required>
+            </div>
+            <div class="mb-3">
+                <label for="purpose" class="form-label">Purpose:</label>
+                <input type="text" class="form-control" id="purpose" placeholder="Enter Purpose" required>
+            </div>
+            <div class="mb-3">
+                <label for="selectPeriod" class="form-label">Select Period:</label>
+                <select class="form-select" id="selectPeriod" required>
+                    <option value="full">Full</option>
+                    <option value="half">Half</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="classification" class="form-label">Classification:</label>
+                <select class="form-select" id="classification" required>
+                    <option value="credit">Credit</option>
+                    <option value="debit">Debit</option>
+                    <option value="balance">Balance</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="type" class="form-label">Type:</label>
+                <select class="form-select" id="type" required>
+                    <option value="pdf">PDF</option>
+                    <option value="excel">Excel</option>
+                    <option value="csv">CSV</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <button type="button" class="btn btn-primary" onclick="shareData()">Share</button>
+                <button type="button" class="btn btn-success" onclick="downloadData()"><i class="fas fa-download"></i> Download</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        function isFormFilled() {
+            return (
+                document.getElementById('from').value &&
+                document.getElementById('to').value &&
+                document.getElementById('amount').value &&
+                document.getElementById('date').value &&
+                document.getElementById('purpose').value &&
+                document.getElementById('selectPeriod').value &&
+                document.getElementById('classification').value &&
+                document.getElementById('type').value
+            );
+        }
+
+        function shareData() {
+            if (isFormFilled()) {
+                var formData = {
+                    from: document.getElementById('from').value,
+                    to: document.getElementById('to').value,
+                    amount: document.getElementById('amount').value,
+                    date: document.getElementById('date').value,
+                    purpose: document.getElementById('purpose').value,
+                    selectPeriod: document.getElementById('selectPeriod').value,
+                    classification: document.getElementById('classification').value,
+                    type: document.getElementById('type').value
+                };
+
+                // Construct message for WhatsApp
+                var whatsappMessage = 'From: ' + formData.from +
+                                      '\nTo: ' + formData.to +
+                                      '\nAmount: ' + formData.amount +
+                                      '\nDate: ' + formData.date +
+                                      '\nPurpose: ' + formData.purpose +
+                                      '\nSelect Period: ' + formData.selectPeriod +
+                                      '\nClassification: ' + formData.classification +
+                                      '\nType: ' + formData.type;
+
+                // Open WhatsApp with pre-filled message
+                var whatsappLink = 'https://wa.me/?text=' + encodeURIComponent(whatsappMessage);
+                window.location.href = whatsappLink;
+            } else {
+                alert('Please fill in all details before sharing.');
+            }
+        }
+
+        function downloadData() {
+            if (isFormFilled()) {
+                // Create a Blob containing the data
+                var formDataBlob = new Blob([JSON.stringify({
+                    from: document.getElementById('from').value,
+                    to: document.getElementById('to').value,
+                    amount: document.getElementById('amount').value,
+                    date: document.getElementById('date').value,
+                    purpose: document.getElementById('purpose').value,
+                    selectPeriod: document.getElementById('selectPeriod').value,
+                    classification: document.getElementById('classification').value,
+                    type: document.getElementById('type').value
+                })], { type: 'application/json' });
+
+                // Create a download link and trigger click
+                var downloadLink = document.createElement('a');
+                downloadLink.href = URL.createObjectURL(formDataBlob);
+                downloadLink.download = 'data.json';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            } else {
+                alert('Please fill in all details before downloading.');
+            }
+        }
+    </script>
+</body>
+</html>

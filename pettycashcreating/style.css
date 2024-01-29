@@ -1,0 +1,31 @@
+body {
+    background-color:lightpink !important;
+  }
+
+  .login {
+    /* max-width: 400px; */
+    margin: auto;
+    margin-top:40px;
+  }
+
+  .title
+  {
+
+   text-align: center; 
+  }
+
+
+  @media screen and (min-device-width: 318px) and (max-device-width: 768px) { 
+
+
+.login {
+    width: 270px !important;
+    margin: auto; /* Center the container horizontally */
+  }
+
+  .login button {
+    display: block; /* Make the button a block-level element */
+    margin: auto; /* Center the button horizontally within its parent */
+    width: 140px;
+  }
+}
